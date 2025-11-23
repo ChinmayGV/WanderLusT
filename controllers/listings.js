@@ -314,3 +314,12 @@ module.exports.multerSizehandler = (error, req, res, next) => {
   // Handle other errors if needed
   throw new ExpressError(400, error.message);
 };
+
+// ==========================Booking listing =================================
+
+module.exports.renderBookingDetailsPage = async (req, res) => {
+  let { id } = req.params;
+  let BookingListing = await Listing.findById(id);
+
+  res.render("listings/book.ejs", { BookingListing });
+};

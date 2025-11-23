@@ -1,0 +1,364 @@
+<% layout('/layouts/boilerplate') %>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+
+    <style>
+      /* --- WRAPPER CLASS (Replaces Body Styling) --- */
+      .booking-wrapper {
+        /* This ensures the styling is contained only within this section */
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        
+        /* Layout & Background */
+        min-height: calc(100vh - 208px);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        box-sizing: border-box;
+
+        /* BACKGROUND SETUP */
+        background-image: url(""); /* Ensure this file exists */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        
+      }
+
+      /* Ensure box-sizing matches for children of the wrapper */
+      .booking-wrapper * {
+        box-sizing: border-box;
+      }
+
+      /* --- MAIN CARD CONTAINER --- */
+      .booking-card {
+        display: flex;
+        width: 100%;
+        max-width: 900px;
+        background-color: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin: 0; 
+        padding: 0;
+      }
+
+      .booking-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* --- LEFT PANEL --- */
+      .left-panel {
+        width: 40%;
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: white;
+        position: relative;
+        /* Gradient overlay */
+        background-image: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.8)
+          ),
+          url("background.png");
+        background-size: cover;
+        background-position: center;
+        border-right: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .left-panel h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        margin-top: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .left-panel p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        line-height: 1.5;
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- RIGHT PANEL --- */
+      .right-panel {
+        width: 60%;
+        padding: 3rem;
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      /* --- INPUTS & LABELS --- */
+      .input-row {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      .input-wrapper {
+        flex: 1;
+      }
+
+      /* Scoped label styling to avoid affecting global labels */
+      .booking-wrapper label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .booking-wrapper input[type="text"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 50px;
+        border: 1px solid #d1d5db;
+        background-color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        outline: none;
+        transition: all 0.2s;
+      }
+
+      .booking-wrapper input[type="text"]:focus {
+        border-color: #d9a86c;
+        box-shadow: 0 0 0 3px rgba(217, 168, 108, 0.2);
+      }
+
+      /* --- GUEST COUNTER --- */
+      .guest-controls {
+        display: inline-flex;
+        align-items: center;
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 50px;
+        padding: 0.25rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .guest-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: none;
+        background-color: #f3f4f6;
+        color: #374151;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .guest-btn:hover {
+        background-color: #e5e7eb;
+      }
+
+      .guest-display {
+        width: 40px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      .warning-msg {
+        display: none;
+        color: #dc2626;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+      .warning-msg.active {
+        display: block;
+      }
+
+      /* --- GOLDEN BUTTON --- */
+      .btn-submit {
+        width: 100%;
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #b48a5f;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #d9a86c, #b07a4e);
+        color: #1a1a1a;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        box-shadow: 0 10px 15px -3px rgba(180, 138, 95, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        background: linear-gradient(90deg, #eac595, #c69269);
+        transform: scale(1.02);
+        box-shadow: 0 20px 25px -5px rgba(180, 138, 95, 0.4);
+      }
+
+      .btn-submit:active {
+        transform: scale(0.98);
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 768px) {
+        .booking-card {
+          flex-direction: column;
+          max-width: 100%;
+        }
+        .left-panel,
+        .right-panel {
+          width: 100%;
+        }
+        .left-panel {
+          padding: 2rem;
+          height: 200px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="booking-wrapper">
+      
+      <div class="booking-card">
+        <div class="left-panel">
+          <h1>Make Your<br />Reservation</h1>
+          <p>Experience comfort and luxury.</p>
+        </div>
+
+        <div class="right-panel">
+          <form action="/book/submit" method="POST">
+            <div class="form-group input-row">
+              <div class="input-wrapper">
+                <label for="checkIn">Check In</label>
+                <input
+                  id="checkIn"
+                  name="checkIn"
+                  type="text"
+                  placeholder="Select date"
+                  readonly
+                />
+              </div>
+              <div class="input-wrapper">
+                <label for="checkOut">Check Out</label>
+                <input
+                  id="checkOut"
+                  name="checkOut"
+                  type="text"
+                  placeholder="Select date"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Total Guests</label>
+              <div class="guest-controls">
+                <button
+                  type="button"
+                  class="guest-btn"
+                  onclick="updateGuests(-1)"
+                >
+                  -
+                </button>
+                <span id="guestDisplay" class="guest-display">1</span>
+                <button type="button" class="guest-btn" onclick="updateGuests(1)">
+                  +
+                </button>
+              </div>
+              <input type="hidden" id="guestInput" name="guests" value="1" />
+              <p id="guestWarning" class="warning-msg" style="display: none;">
+                Maximum 6 guests allowed.
+              </p>
+            </div>
+
+            <button type="submit" class="btn-submit">Continue Booking</button>
+          </form>
+        </div>
+      </div>
+
+    </div> 
+    <script>
+      // --- Guest Counter Logic ---
+      function updateGuests(change) {
+        const display = document.getElementById("guestDisplay");
+        const input = document.getElementById("guestInput");
+        const warning = document.getElementById("guestWarning");
+
+        let current = parseInt(input.value);
+        let newValue = current + change;
+
+        // Constraints
+        if (newValue > 6) {
+          newValue = 6;
+          warning.classList.add("active");
+        } else {
+          warning.classList.remove("active");
+        }
+
+        if (newValue < 1) newValue = 1;
+
+        // Update DOM
+        input.value = newValue;
+        display.innerText = newValue;
+      }
+
+      // --- Date Picker Logic (Litepicker) ---
+      window.addEventListener("DOMContentLoaded", () => {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        // Initialize Check-In
+        const pickerCheckIn = new Litepicker({
+          element: document.getElementById("checkIn"),
+          singleMode: true,
+          minDate: today,
+          startDate: today,
+          format: "MM/DD/YYYY",
+          setup: (picker) => {
+            picker.on("selected", (date1) => {
+              const nextDay = new Date(date1.dateInstance);
+              nextDay.setDate(nextDay.getDate() + 1);
+
+              // Update Check-Out min date based on Check-In
+              pickerCheckOut.setOptions({
+                minDate: nextDay,
+                startDate: nextDay,
+              });
+            });
+          },
+        });
+
+        // Initialize Check-Out
+        const pickerCheckOut = new Litepicker({
+          element: document.getElementById("checkOut"),
+          singleMode: true,
+          minDate: tomorrow,
+          startDate: tomorrow,
+          format: "MM/DD/YYYY",
+        });
+      });
+    </script>
+  </body>
+</html>

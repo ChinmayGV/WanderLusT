@@ -317,3 +317,31 @@ body {
 .dark-theme .nav-link:hover {
   opacity: 0.9;
 }
+
+@media (max-width: 750px) {
+  .dark-theme .navbar-toggler {
+    color: white !important;
+    background-color: grey !important;
+  }
+
+  .dark-theme .show {
+    background-color: grey !important;
+    /* opacity: 0.5; */
+    border: none !important;
+  }
+
+  .dark-theme .show .btn-search .search {
+    display: none !important;
+  }
+
+  .dark-theme .show .btn-search i {
+    /* display: none !important; */
+    margin-right: 0 !important;
+  }
+
+  .dark-theme .show input {
+    width: 200px;
+    padding-left: 10px !important;
+    padding-right: 0 !important;
+  }
+}

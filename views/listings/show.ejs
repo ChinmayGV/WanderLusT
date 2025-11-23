@@ -29,7 +29,7 @@
 <% if (!currUser || currUser._id.toString() !== listing.owner._id.toString()) { %>
 <div class="btns ps-3 mt-2">
   <a
-    href=""
+    href="/listings/<%= listing._id %>/book"
     class="btn btn-dark col-1 offset-3 edit-btn"
   >Book</a>
 </div>

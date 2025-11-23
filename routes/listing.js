@@ -62,4 +62,11 @@ router
 //Edit Route
 router.get("/:id/edit", isLoggedIn, isOwner, listingController.renderEditForm);
 
+router.get(
+  "/:id/book",
+  isLoggedIn,
+  isVerified,
+  listingController.renderBookingDetailsPage
+);
+
 module.exports = router;
