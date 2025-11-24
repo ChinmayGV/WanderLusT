@@ -1,7 +1,6 @@
 <% layout('/layouts/boilerplate') %>
 <link rel="stylesheet" href="/css/filterPage.css" />
 <link rel="stylesheet" href="/css/index.css" />
-
 <div id="filter-component-wrapper">
   <div class="outer">
     <div id="filter-wrapper">
@@ -220,7 +219,7 @@
 </div>
 
 <!-- ========================= LISTINGS ========================= -->
-<div class="row row-cols-lg-4 mt-2 row-cols-md-3 row-cols-sm-2">
+<div class="row row-cols-xl-4 row-cols-lg-3 mt-2 row-cols-md-2 row-cols-sm-1">
   <% for (let listing of allListings) { %>
   <a href="/listings/<%= listing._id %>" class="listing-link">
     <div class="card col listing-card">

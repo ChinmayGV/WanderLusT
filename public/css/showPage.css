@@ -135,3 +135,16 @@
   object-fit: cover !important;
   padding: 10px 10px 0 10px !important;
 }
+
+.dark-theme .edit-btn {
+  border: 1px solid white;
+}
+
+.dark-theme .edit-btn:hover {
+  color: white !important;
+  background-color: #fe424d !important;
+}
+
+.dark-theme .del-btn:hover {
+  background-color: red !important;
+}
