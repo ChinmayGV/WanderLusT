@@ -72,7 +72,7 @@
             rgba(0, 0, 0, 0.4),
             rgba(0, 0, 0, 0.8)
           ),
-          url("background.png");
+          url("/images/bookingL.png");
         background-size: cover;
         background-position: center;
         border-right: 1px solid rgba(255, 255, 255, 0.3);
@@ -234,6 +234,138 @@
           height: 200px;
         }
       }
+      /* ================================
+   DARK THEME STYLING
+   Activate with: <body class="dark-theme">
+   ================================ */
+.dark-theme .booking-wrapper {
+  /* background-image: url(""); Optional dark background */
+  background-color: #0f0f0f;
+  color: #e5e5e5;
+}
+
+/* --- CARD CONTAINER --- */
+.dark-theme .booking-card {
+  background-color: rgba(25, 25, 25, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* --- LEFT PANEL --- */
+.dark-theme .left-panel {
+  color: #f5f5f5;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.85)
+    ),
+    url("/images/bookingD.png"); /* Optional separate dark BG */
+  background-size: cover;
+  background-position: center;
+}
+
+.dark-theme .left-panel h1 {
+  color: #ffffff;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+.dark-theme .left-panel p {
+  color: #dddddd;
+  opacity: 0.85;
+}
+
+/* --- RIGHT PANEL --- */
+.dark-theme .right-panel {
+  background-color: rgba(40, 40, 40, 0.7);
+  color: #e6e6e6;
+}
+
+/* FORM LABELS */
+.dark-theme .booking-wrapper label {
+  color: #bbbbbb;
+}
+
+/* INPUT FIELDS */
+.dark-theme .booking-wrapper input[type="text"] {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid #555;
+  color: #f0f0f0;
+}
+
+.dark-theme .booking-wrapper input[type="text"]:focus {
+  border-color: #d9a86c;
+  box-shadow: 0 0 0 3px rgba(217, 168, 108, 0.4);
+}
+
+/* GUEST BUTTONS */
+.dark-theme .guest-controls {
+  background-color: #1c1c1c;
+  border: 1px solid #444;
+}
+
+.dark-theme .guest-btn {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-theme .guest-btn:hover {
+  background-color: #444;
+}
+
+.dark-theme .guest-display {
+  color: #fff;
+}
+
+/* WARNING MESSAGE */
+.dark-theme .warning-msg {
+  color: #ff6b6b;
+}
+
+/* SUBMIT BUTTON */
+.dark-theme .btn-submit {
+  background: linear-gradient(90deg, #b07a4e, #8a603b);
+  color: #fff;
+  border: 1px solid #8a603b;
+  box-shadow: 0 10px 15px -3px rgba(138, 96, 59, 0.4);
+}
+
+.dark-theme .btn-submit:hover {
+  background: linear-gradient(90deg, #ca996e, #a5764c);
+  box-shadow: 0 20px 25px -5px rgba(138, 96, 59, 0.6);
+}
+
+.dark-theme .btn-submit:active {
+  transform: scale(0.97);
+}
+
+/* Litepicker popup dark mode */
+.dark-theme .litepicker {
+  background-color: #2a2a2a !important;
+  color: #ddd !important;
+}
+
+.dark-theme .litepicker .container__days .day-item {
+  background-color: #333 !important;
+  color: #eee !important;
+}
+
+.dark-theme .litepicker .container__days .day-item:hover {
+  background-color: #444 !important;
+}
+
+.dark-theme .litepicker .container__main {
+  border: 1px solid #555 !important;
+}
+
+.dark-theme .litepicker .month-item-name {
+  /* color: #fff !important; */
+}
+
+.dark-theme .litepicker .container__footer {
+  background-color: #222 !important;
+}
+
     </style>
   </head>
   <body>
@@ -247,7 +379,7 @@
         </div>
 
         <div class="right-panel">
-          <form action="/book/submit" method="POST">
+          <form action="/listings/<%=id %>/checkout" method="GET">
             <div class="form-group input-row">
               <div class="input-wrapper">
                 <label for="checkIn">Check In</label>
@@ -287,9 +419,9 @@
                 </button>
               </div>
               <input type="hidden" id="guestInput" name="guests" value="1" />
-              <p id="guestWarning" class="warning-msg" style="display: none;">
+              <span id="guestWarning" class="warning-msg" >
                 Maximum 6 guests allowed.
-              </p>
+              </span>
             </div>
 
             <button type="submit" class="btn-submit">Continue Booking</button>

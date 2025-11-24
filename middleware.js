@@ -139,6 +139,19 @@ module.exports.eligibleToReview = async (req, res, next) => {
   next();
 };
 
+module.exports.eligibleToBook = async (req, res, next) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+
+  // Mongoose check: Does the listing owner's ID equal the current user's ID?
+  if (listing.owner.equals(req.user._id)) {
+    req.flash("error", "You can't Book  your own listing!");
+    return res.redirect(`/listings/${id}`);
+  }
+
+  next();
+};
+
 //to redirect when user is logged in and click on i'll do it later
 module.exports.checkIfUserLoggedIn = async (req, res, next) => {
   if (!req.user.isVerified) {

@@ -15,6 +15,7 @@ const {
   validateListing,
   validateSearch,
   isVerified,
+  eligibleToBook,
 } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 const multer = require("multer"); //to parse form data
@@ -66,7 +67,16 @@ router.get(
   "/:id/book",
   isLoggedIn,
   isVerified,
+  eligibleToBook,
   listingController.renderBookingDetailsPage
+);
+
+router.get(
+  "/:id/checkout",
+  isLoggedIn,
+  isVerified,
+  eligibleToBook,
+  listingController.renderCheckoutPage
 );
 
 module.exports = router;

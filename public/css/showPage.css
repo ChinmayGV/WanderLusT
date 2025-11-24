@@ -137,10 +137,6 @@
 }
 
 .dark-theme .edit-btn {
-  border: 1px solid white;
-}
-
-.dark-theme .edit-btn:hover {
   color: white !important;
   background-color: #fe424d !important;
 }

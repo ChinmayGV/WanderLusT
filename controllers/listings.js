@@ -319,7 +319,35 @@ module.exports.multerSizehandler = (error, req, res, next) => {
 
 module.exports.renderBookingDetailsPage = async (req, res) => {
   let { id } = req.params;
-  let BookingListing = await Listing.findById(id);
+  // let BookingListing = await Listing.findById(id);
 
-  res.render("listings/book.ejs", { BookingListing });
+  res.render("listings/book.ejs", { id });
+};
+
+module.exports.renderCheckoutPage = async (req, res) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
+  let { checkIn, checkOut, guests } = req.query;
+  let cIn = new Date(checkIn);
+  let cOut = new Date(checkOut);
+
+  if (cIn > cOut) {
+    req.flash("error", "check-in date cannot be after check-out date ");
+    return res.redirect(`/listings/${id}/book`);
+  }
+
+  const diffDays = (cOut - cIn) / (1000 * 60 * 60 * 24);
+
+  if (diffDays > 30) {
+    req.flash("error", "you can't book for more than 30 days");
+    return res.redirect(`/listings/${id}/book`);
+  }
+
+  res.render("listings/checkout", {
+    checkIn,
+    checkOut,
+    guests,
+    diffDays,
+    listing,
+  });
 };
