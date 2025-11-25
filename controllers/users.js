@@ -37,7 +37,7 @@ module.exports.signup = async (req, res) => {
 
     await transporter.sendMail({
       to: registeredUser.email,
-      from: ` <${process.env.EMAIL_USER}>`, // Must be your authenticated email
+      from: `<${process.env.EMAIL_USER}>`, // Must be your authenticated email
       subject: "Verify Your Email for Wanderlust",
       html: `
         <h1>Email Verification</h1>
