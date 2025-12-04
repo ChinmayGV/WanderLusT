@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      .success-container {
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .confirmation-card {
+        background: white;
+        padding: 3rem;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid #eaeaea;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .icon-circle {
+        width: 80px;
+        height: 80px;
+        background: #4bb543; /* Success Green */
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem auto;
+        box-shadow: 0 10px 20px rgba(75, 181, 67, 0.3);
+      }
+
+      .icon-circle i {
+        font-size: 2.5rem;
+        color: white;
+      }
+
+      .success-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #222;
+        margin-bottom: 0.5rem;
+      }
+
+      .order-id {
+        color: #717171;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+      }
+
+      .details-box {
+        background: #f8f8f8;
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: left;
+        margin-bottom: 2rem;
+      }
+
+      .listing-preview {
+        display: flex;
+        gap: 15px;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .listing-img {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        object-fit: cover;
+      }
+
+      .listing-info h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #222;
+      }
+
+      .listing-info p {
+        margin: 4px 0 0 0;
+        font-size: 0.9rem;
+        color: #717171;
+      }
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.8rem;
+        font-size: 0.95rem;
+      }
+
+      .info-label {
+        color: #717171;
+      }
+      .info-value {
+        font-weight: 600;
+        color: #222;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #ccc;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #fe424d; /* Wanderlust Red */
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .btn-home,
+      .btn-trips {
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .btn-home {
+        background: #f7f7f7;
+        color: #222;
+      }
+      .btn-home:hover {
+        background: #e0e0e0;
+      }
+
+      .btn-trips {
+        background: #fe424d;
+        color: white;
+      }
+      .btn-trips:hover {
+        background: #e02f3a;
+        opacity: 0.95;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="success-container">
+      <div class="confirmation-card">
+        <div class="icon-circle">
+          <i class="fa-solid fa-check"></i>
+        </div>
+
+        <h1 class="success-title">Booking Confirmed!</h1>
+        <p class="order-id">
+          Transaction ID: <%= booking.paymentDetails.paymentId %>
+        </p>
+
+        <div class="details-box">
+          <div class="listing-preview">
+            <img
+              src="<%= booking.listing.image.url %>"
+              alt="listing"
+              class="listing-img"
+            />
+            <div class="listing-info">
+              <h4><%= booking.listing.title %></h4>
+              <p>
+                <%= booking.listing.location %>, <%= booking.listing.country %>
+              </p>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Check-in</span>
+            <span class="info-value"
+              ><%= booking.checkIn.toLocaleDateString('en-IN') %></span
+            >
+          </div>
+          <div class="info-row">
+            <span class="info-label">Check-out</span>
+            <span class="info-value"
+              ><%= booking.checkOut.toLocaleDateString('en-IN') %></span
+            >
+          </div>
+          <div class="info-row">
+            <span class="info-label">Guests</span>
+            <span class="info-value"><%= booking.numberOfGuests %> Guests</span>
+          </div>
+
+          <div class="total-row">
+            <span>Amount Paid</span>
+            <span>₹<%= booking.totalPrice.toLocaleString('en-IN') %></span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="/listings" class="btn-home">Explore More</a>
+          <a href="/myBookings" class="btn-trips">My Trips</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

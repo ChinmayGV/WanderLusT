@@ -185,19 +185,132 @@
         }else{
             consider=3
             
-        }%>
+        }
+        
+        amount =  (listing.price*consider*diffDays )* 1.18 
+        
+        %>
 
 
 
         <div class="price-box">
-          <span>₹<%= (listing.price*consider*diffDays )* 1.18 %></span>
+          <span>₹<%= amount %></span>
           <p style="margin-top: 6px; font-size: 0.9rem; color: #6a5a40">
             Includes all taxes & fees
           </p>
         </div>
-
-        <a href="#" class="proceed-btn">Proceed to Payment</a>
+        
+       <button id="rzp-button1" class="proceed-btn" style="border: none; width:100% ;">Proceed to Payment</button>
       </div>
     </div>
-  </body>
-</html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  const btn = document.getElementById("rzp-button1");
+
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    btn.innerText = "Processing...";
+    btn.disabled = true; // Prevent double clicks
+
+    // ---------------------------------------------------------
+    // STEP 1: CAPTURE EJS DATA INTO JAVASCRIPT VARIABLES
+    // ---------------------------------------------------------
+    
+    // FIX: Output raw numbers without quotes for math safety
+    const amount = <%= (listing.price * consider * diffDays) * 1.18 %>; 
+    
+    // // FIX: Ensure guests is a number
+    const guests = <%= guests %>;
+    // const amount = <%= amount %>;  
+    // const guests = <%= guests %>;
+
+    // Create a clean object with all details
+    const bookingData = {
+        listingId: "<%= listing._id %>",
+        userId: "<%= currUser._id %>", 
+        checkIn: "<%= checkIn %>", // Ensure your backend parses this string correctly
+        checkOut: "<%= checkOut %>",
+        numberOfGuests: guests,
+        totalPrice: amount
+    };
+
+    try {
+        // ---------------------------------------------------------
+        // STEP 2: SEND DATA TO BACKEND (CREATE ORDER)
+        // ---------------------------------------------------------
+        const response = await axios.post(`/listings/${bookingData.listingId}/create-order`, { 
+            amount: amount,
+            listingId: bookingData.listingId 
+        });
+
+        const { order } = response.data;
+
+        // ---------------------------------------------------------
+        // STEP 3: INITIALIZE RAZORPAY
+        // ---------------------------------------------------------
+        const options = {
+            "key": "<%= process.env.RAZORPAY_KEY_ID %>", // <--- REPLACE THIS NOW
+            "amount": order.amount, 
+            "currency": "INR",
+            "name": "Wanderlust",
+            "description": "Booking for <%= listing.title %>",
+            "order_id": order.id, 
+            
+            // Success Handler
+            "handler": async function (response) {
+                
+                const verifyPayload = {
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature,
+                    bookingDetails: bookingData
+                };
+
+                try {
+                    const verifyRes = await axios.post(`/listings/${bookingData.listingId}/verify-payment`, verifyPayload);
+                    if (verifyRes.data.success) {
+                        window.location.href = verifyRes.data.redirectUrl;
+                    }
+                } catch (verifyErr) {
+                    alert("Payment successful, but verification failed.");
+                    console.error(verifyErr);
+                    btn.innerText = "Proceed to Payment";
+                    btn.disabled = false;
+                }
+            },
+            "prefill": {
+                "name": "<%= currUser.username %>",
+                "email": "<%= currUser.email %>",
+            },
+            "theme": { "color": "#fe424d" },
+            
+            // Handle Modal Close (User clicks X)
+            "modal": {
+                "ondismiss": function(){
+                    btn.innerText = "Proceed to Payment";
+                    btn.disabled = false;
+                }
+            }
+        };
+
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+
+        rzp1.on('payment.failed', function (response){
+            alert("Payment Failed: " + response.error.description);
+            btn.innerText = "Proceed to Payment";
+            btn.disabled = false;
+        });
+
+    } catch (err) {
+        console.error("Error in payment flow:", err);
+        alert("Something went wrong. Please try again.");
+        btn.innerText = "Proceed to Payment";
+        btn.disabled = false;
+    }
+  });
+</script>

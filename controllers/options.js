@@ -2,6 +2,7 @@ const Review = require("../models/review.js");
 const User = require("../models/user.js");
 const Listing = require("../models/listing.js");
 const { cloudinary } = require("../cloudConfig.js");
+const Booking = require("../models/booking.js");
 
 // ====================MyProfile================================
 module.exports.renderMyProfilePage = (req, res) => {
@@ -162,6 +163,9 @@ module.exports.deleteUser = async (req, res, next) => {
     // Find and delete all Reviews authored by this user
     await Review.deleteMany({ author: userId });
 
+    //find and delete all bookings related to traveller
+    const booking = await Booking.deleteMany({ traveler: userId });
+    console.log(booking);
     // 2. Delete the User Document
     await User.findByIdAndDelete(userId);
 
@@ -196,4 +200,14 @@ module.exports.renderMyListingPage = async (req, res) => {
     req.flash("error", "Could not load your listings.");
     res.redirect("/");
   }
+};
+
+module.exports.renderMyBookingsPage = async (req, res) => {
+  // let user = req.user;
+  let myBookings = await Booking.find({ traveler: req.user._id }).populate(
+    "listing"
+  );
+  console.log(myBookings);
+
+  res.render("options/mybookings.ejs", { myBookings });
 };

@@ -16,9 +16,9 @@
       <div class="navbar-nav ms-auto">
         <% const hideOnPaths = [ '/login', '/signup', '/listings/new',
         '/resend-verification-link', '/myProfile', '/email', '/forgot-password',
-        '/reset-password', '/myListings', '/myReviews' ]; let shouldShow = true;
-        if (typeof currentPath !== 'undefined') { const isExactHide =
-        hideOnPaths.includes(currentPath); const isEditPage =
+        '/reset-password', '/myListings', '/myReviews' ,'/myBookings' ]; let
+        shouldShow = true; if (typeof currentPath !== 'undefined') { const
+        isExactHide = hideOnPaths.includes(currentPath); const isEditPage =
         currentPath.includes('/edit'); const isListingShowPage =
         /^\/listings\/[a-zA-Z0-9]+$/.test(currentPath) && !['search',
         'new'].includes(currentPath.split('/')[2]); shouldShow = !isExactHide &&
@@ -145,8 +145,7 @@
             <a href="/myProfile"> Profile</a>
             <a href="/myListings">my Listings</a>
             <a href="/myReviews"> Reviews</a>
-            <a href="/MyBookings">Bookings</a>
-            <a href="/settings">Settings</a>
+            <a href="/myBookings">Bookings</a>
           </nav>
 
           <hr class="menu-divider" />
