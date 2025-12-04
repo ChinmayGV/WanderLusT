@@ -124,7 +124,7 @@ Make sure you have the following installed on your machine:
 
 ## 📸 Project Screenshots
 
-| 🏠 Landing Page | 🗺️ Map Integration & show page |
+| 🏠 Landing Page(Light/Dark) | 🗺️ Map Integration & show page |
 |:---:|:---:|
 | <img src="assets/screenshots/homePage.png" width="100%"> | <img src="assets/screenshots/showPage.png" width="100%"> |
 
