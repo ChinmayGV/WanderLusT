@@ -207,7 +207,6 @@ module.exports.renderMyBookingsPage = async (req, res) => {
   let myBookings = await Booking.find({ traveler: req.user._id }).populate(
     "listing"
   );
-  console.log(myBookings);
 
   res.render("options/mybookings.ejs", { myBookings });
 };

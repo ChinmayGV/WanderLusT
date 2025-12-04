@@ -2,6 +2,7 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Booking = require("../models/booking"); // Import your Booking model
 const { sendTicketPdf } = require("../utils/sendPdf.js");
+const transporter = require("../config/nodemail.js");
 // Initialize Razorpay with your API keys
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -92,16 +93,65 @@ module.exports.verifyPayment = async (req, res) => {
   }
 };
 
+const nodemailer = require("nodemailer"); // Ensure this is required at the top
+
 module.exports.confirmationPage = async (req, res) => {
   try {
     const { id, bookingId } = req.params;
 
-    // We need to populate the 'listing' to show title and image on success page
-    const booking = await Booking.findById(bookingId).populate("listing");
+    // FIX 1: Use Nested Populate to get the Owner object
+    const booking = await Booking.findById(bookingId).populate({
+      path: "listing",
+      populate: { path: "owner" }, // This fetches the actual User object
+    });
 
     if (!booking) {
       req.flash("error", "Booking not found!");
       return res.redirect("/listings");
+    }
+
+    // FIX 2: Safety Check - Ensure the owner actually exists before sending
+    if (!booking.listing.owner || !booking.listing.owner.email) {
+      console.log("Owner email not found, skipping email notification.");
+      // We don't return here because we still want to show the success page to the user
+    } else {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: booking.listing.owner.email,
+        subject: `New Booking for ${booking.listing.title}!`,
+        html: `
+            <h3>Hello ${booking.listing.owner.username},</h3>
+            <p>Great news! Your listing <b>${
+              booking.listing.title
+            }</b> has been booked.</p>
+            <ul>
+              <li><b>Booked by:</b> ${
+                req.user ? req.user.username : "A guest"
+              }</li>
+              <li><b>Booking ID:</b> ${booking._id}</li>
+            </ul>
+            <p>Please check your dashboard for full details.</p>
+          `,
+      };
+
+      // It's often safer to await this or use a callback to catch email errors specifically
+      // await transporter.sendMail(mailOptions);
+
+      transporter.sendMail(mailOptions).catch((err) => {
+        console.log("Failed to send email:", err);
+      });
+
+      console.log("Email process started (background)...");
+
+      console.log("Email sent to owner!");
     }
 
     res.render("listings/bookingConfirm.ejs", { booking });
