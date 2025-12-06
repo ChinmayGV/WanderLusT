@@ -8,7 +8,7 @@ const map = L.map("map").setView([lat, lng], 13);
 //   }
 // ).addTo(map);
 L.tileLayer(
-  "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=e3faff56-0e68-4355-baeb-399cbd5552ce",
+  `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${process.env.STADIA_MAPS_API}`,
   {
     maxZoom: 20,
     attribution:
