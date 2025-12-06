@@ -1,4 +1,4 @@
-# ✈️ Wanderlust
+# ✈️ WanderlusT
 
 ![Project Status](https://img.shields.io/badge/Status-Completed-success)
 ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -8,12 +8,15 @@
 ## 🌟 Key Features
 
 * **User Authentication & Authorization:** Secure login and signup using **Passport.js**.
+* **Email Verification:** Mandatory email verification ensures that only verified users can book stays, preventing spam and enhancing security.
+* **User Profile Management:** Users can customize their profiles, edit personal details, and upload profile pictures.
 * **CRUD Operations:** Users can Create, Read, Update, and Delete property listings.
 * **Booking System:** Users can book stays, with backend validation preventing double bookings.
-* **Email Notifications:** Automated email confirmation sent to listing owners upon successful booking (powered by **Nodemailer**).
+* **Email Notifications:** Automated email confirmation sent to listing owners & to the user  upon successful booking (by **Nodemailer**).
 * **Reviews & Ratings:** Guests can leave reviews and ratings for properties they have visited.
 * **Interactive Maps:** Integration with **LeafLet** to show exact property locations using **opencage Geocoder** and **stadia maps (tile provider)** .
 * **Image Uploads:** Cloud storage support using **Cloudinary** for listing images.
+* **Dark Mode:** A togglable dark theme for better user experience in low-light environments.
 * **MVC Architecture:** Clean separation of concerns for better maintainability.
 
 ## 🛠️ Tech Stack
@@ -73,7 +76,7 @@ Make sure you have the following installed on your machine:
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/ChinmayGV/WanderLusT.git]
+    git clone https://github.com/ChinmayGV/WanderLusT.git
     ```
 
 2.  **Install Dependencies**
@@ -117,3 +120,18 @@ Make sure you have the following installed on your machine:
     `http://localhost:3333`
 
 ---
+
+
+## 📸 Project Screenshots
+
+| 🏠 Landing Page(Light/Dark) | 🗺️ Map Integration & show page |
+|:---:|:---:|
+| <img src="assets/screenshots/homePage.png" width="100%"> | <img src="assets/screenshots/showPage.png" width="100%"> |
+
+| 📝 Add Listing & Edit Form | ✅ Booking flow |
+|:---:|:---:|
+| <img src="assets/screenshots/create&editListing.png" width="100%"> | <img src="assets/screenshots/BookingFlow.png" width="100%"> |
+
+| 🔐 Login/Signup | 👤 User Profile |
+|:---:|:---:|
+| <img src="assets/screenshots/login&signupPage.png" width="100%"> | <img src="assets/screenshots/userProfile.png" width="100%"> |
