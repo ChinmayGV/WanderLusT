@@ -256,7 +256,18 @@ module.exports.editListing = async (req, res) => {
     key: process.env.OPENCAGE_MAP_TOKEN,
     limit: 1,
   };
+  // console.log(params);
+  // console.log("yes man");
+
   const response = await axios.get(geocodeUrl, { params });
+  // let response;
+  // try {
+  //   console.log("⏳ Sending request...");
+  //   response = await axios.get(geocodeUrl, { params });
+  //   console.log("✅ SUCCESS! Response data:", response.data);
+  // } catch (error) {
+  //   console.error("❌ ERROR CAUGHT!");
+  // }
   const geometry = response.data.results[0].geometry;
   let result = await Listing.findByIdAndUpdate(
     id,
@@ -267,7 +278,7 @@ module.exports.editListing = async (req, res) => {
         coordinates: [geometry.lng, geometry.lat],
       },
     },
-    { runValidators: true }
+    { runValidators: true },
   );
   if (req.file) {
     let url = req.file.path;
@@ -285,10 +296,9 @@ module.exports.editListing = async (req, res) => {
           coordinates: [geometry.lng, geometry.lat],
         },
       },
-      { runValidators: true }
+      { runValidators: true },
     );
   }
-
   req.flash("success", "Listing Updated");
   res.redirect(`/listings/${id}`);
 };

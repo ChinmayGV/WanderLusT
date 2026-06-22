@@ -23,8 +23,8 @@ const termsRouter = require("./routes/terms&policy.js");
 const optionRouter = require("./routes/options.js");
 const bookingRouter = require("./routes/booking.js");
 
-const mongourl = process.env.ATLAS_DB_URL;
-// const mongourl = process.env.LOCAL_DB_URL; //uncomment this to use local DB
+// const mongourl = process.env.ATLAS_DB_URL;
+const mongourl = process.env.LOCAL_DB_URL; //uncomment this to use local DB
 main()
   .then((res) => {
     console.log("connected successfully to DB");
